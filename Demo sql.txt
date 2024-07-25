@@ -1,0 +1,14 @@
+Demo 
+- membuat database dengan nama umkm
+- import data
+- cek data tabel: select * from nama_db.nama_tabel;
+- tunjukan data berasal dari kab sukabumi -> menggunakan where
+- filter data dari tahun 2019 dan di susun berdasarkan kategori usaha -> where >= conditional order by kolom;
+- membatasi tahun -> limit
+- mencari kategori usaha tapi unik artinya berbeda -> distinct
+- menunjukan seluruh data yg hanya kategori_usaha dan fashion -> IN atau OR
+- menunjukan seluruh data dengan kategori usaha Fasihon di kabupaten Karawang -> Where, logika and
+- menunjukan seluruh data selain kategori usaha kuliner, makanan, minuman -> where, Not In(nama kategorinya)
+- dari tahun 2018-2020, bagaimana tren jumlah umkm di kabupaten tasikmalaya untuk kategori usaha batik? -> Where, And
+- Diantara kota Bandung, Kabupaten bandung, dan Kabupaten Bandung Barat. Dimanakah Ukm Kuliner terpusar pada tahun 2021 -> Select * from nama_tabel where nama_kolom Like '%A%' And kolom = 'kategori' And kolom = tahun;
+- kabupaten/kota mana aja yg memeiliki angka 7 di digit ke 3 kode tersebut? -> select kolom from nama_tabel where nama_kolom like '__7%'; 
