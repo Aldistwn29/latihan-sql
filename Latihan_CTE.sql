@@ -7,7 +7,7 @@ WITH RECURSIVE fibonacci (n, fib_n, next_fib_n) AS
 	SELECT 1, 0, 1
     UNION ALL
     SELECT n + 1, next_fib_n, fib_n + next_fib_n
-		FROM fibonacci WHERE  n < 10
+	FROM fibonacci WHERE  n < 10
 )
 SELECT fib_n FROM fibonacci WHERE n = 8;
 
@@ -16,10 +16,10 @@ SELECT fib_n FROM fibonacci WHERE n = 8;
 
 CREATE TABLE employees (
 	id INT PRIMARY KEY NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    manager_id INT NULL, 
-    INDEX (manager_id),
-    FOREIGN KEY (manager_id) references employees (id)
+	name VARCHAR(100) NOT NULL,
+	manager_id INT NULL, 
+	INDEX (manager_id),
+	FOREIGN KEY (manager_id) references employees (id)
 );
 
 DESCRIBE employees;
@@ -40,12 +40,13 @@ SELECT * FROM employees;
 WITH RECURSIVE employees_paths (id, name, path) AS
 (
 	SELECT id, name, CAST(id AS CHAR(20))
-		FROM employees
-		WHERE manager_id IS NULL
+	FROM employees
+	WHERE manager_id IS NULL
 	UNION ALL
-    SELECT e.id, e.name, CONCAT(ep.path, ',', e.id)
-		FROM employees_paths AS ep JOIN employees AS e
-			ON ep.id = e.manager_id
+	SELECT e.id, e.name, CONCAT(ep.path, ',', e.id)
+	FROM employees_paths AS ep 
+	JOIN employees AS e
+		ON ep.id = e.manager_id
 )
 SELECT * FROM employees_paths
 WHERE id IN (692, 4610)
@@ -55,33 +56,37 @@ ORDER BY path;
 -- Membuat tabel
 
 CREATE TABLE employee_demographics (
+	
 	employee_id INT NOT NULL,
-    frist_name VARCHAR(50),
-    last_name VARCHAR(50),
-    age INT,
-    gender VARCHAR(10),
-    birth_date DATE,
-    PRIMARY KEY (employee_id)
+	frist_name VARCHAR(50),
+	last_name VARCHAR(50),
+	age INT,
+	gender VARCHAR(10),
+	birth_date DATE,
+	PRIMARY KEY (employee_id)
 );
 
 CREATE TABLE employee_salary (
+	
 	employee_id INT NOT NULL,
-    frist_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
+	frist_name VARCHAR(50) NOT NULL,
+	last_name VARCHAR(50) NOT NULL,
 	occupation VARCHAR(50),
-    salary INT,
+	salary INT,
 	dept_id INT
 );
 
 CREATE TABLE parks_departments (
+	
 	department_id INT NOT NULL AUTO_INCREMENT,
-    department_name VARCHAR(50) NOT NULL,
-    PRIMARY KEY (department_id)
+	department_name VARCHAR(50) NOT NULL,
+	PRIMARY KEY (department_id)
 );
 
 -- Mengisi Nilai pada tabel
 INSERT INTO employee_demographics (employee_id, frist_name, last_name, age, gender, birth_date)
 VALUES
+
 (1,'Leslie', 'Knope', 44, 'Female','1979-09-25'),
 (3,'Tom', 'Haverford', 36, 'Male', '1987-03-04'),
 (4, 'April', 'Ludgate', 29, 'Female', '1994-03-27'),
@@ -96,6 +101,7 @@ VALUES
 
 INSERT INTO  employee_salary (employee_id, frist_name, last_name, occupation, salary, dept_id)
 VALUES
+
 (1, 'Leslie', 'Knope', 'Deputy Director of Parks and Recreation', 75000,1),
 (2, 'Ron', 'Swanson', 'Director of Parks and Recreation', 70000,1),
 (3, 'Tom', 'Haverford', 'Entrepreneur', 50000,1),
@@ -111,6 +117,7 @@ VALUES
 
 INSERT INTO parks_departments (department_name)
 VALUES
+
 ('Parks and Recreation'),
 ('Animal Control'),
 ('Public Works'),
@@ -134,7 +141,7 @@ WITH CTE_Example AS
 	SELECT 	gender, SUM(salary), MIN(salary), MAX(salary), AVG(salary), COUNT(salary)
 	FROM employee_demographics AS ed
 		JOIN employee_salary AS es 
-		ON ed.employee_id = es.employee_id
+			ON ed.employee_id = es.employee_id
 	GROUP BY gender
 )
 -- Menampilkan hasil dari CTE
@@ -146,48 +153,57 @@ SELECT * FROM CTE_Example;
 -- Melakukan Perhitungan di tabel CTE
 WITH CTE_Example AS 
 (
+
 	SELECT 	gender, SUM(salary), MIN(salary), MAX(salary), AVG(salary), COUNT(salary)
 	FROM employee_demographics AS ed
 		JOIN employee_salary AS es 
-		ON ed.employee_id = es.employee_id
+			ON ed.employee_id = es.employee_id
 	GROUP BY gender
+
 )
-SELECT gender, ROUND(AVG(`SUM(salary)`/`COUNT(salary)`), 2) AS rata_rata_gaji
-FROM CTE_Example
-GROUP BY gender;
+	
+	SELECT gender, ROUND(AVG(`SUM(salary)`/`COUNT(salary)`), 2) AS rata_rata_gaji
+	FROM CTE_Example
+	GROUP BY gender;
 
 -- Membuat beberapa CTE hanya dengan 1 WITH
 WITH CTE_Example AS 
 (
+
 	SELECT employee_id, gender, birth_date
 	FROM employee_demographics AS em
 	WHERE em.birth_date > '1985-01-01'
 ),
-CTE_Example2 AS 
+
+CTE_Example2 AS
+
 (
+
 	SELECT employee_id, salary
 	FROM employee_salary AS es
 	WHERE es.salary >= 10000
+
 )
+
 SELECT *
-FROM 
-	CTE_Example AS cte1
-LEFT JOIN 
-	CTE_Example2 AS cte2
-    ON cte1.employee_id = cte2.employee_id;
+FROM CTE_Example AS cte1
+LEFT JOIN CTE_Example2 AS cte2
+	ON cte1.employee_id = cte2.employee_id;
     
 -- Mengubah nama kolom dalam CTE
 WITH CTE_Example(gender, Jumlah_gaji, gaji_terkecil, gaji_terbesar, rata_gaji, jumlah_baris) AS 
 (
+
 	SELECT gender, SUM(salary) AS jumlah_gaji, MIN(salary) AS gaji_terkecil, MAX(salary) AS gaji_terbesar, AVG(salary) AS rata_gaji, COUNT(salary) AS jumlah_baris
     FROM employee_demographics AS ed
     JOIN employee_salary AS es
     ON ed.employee_id = es.employee_id
     GROUP BY gender
+
 )
-SELECT gender, ROUND(AVG(jumlah_gaji/jumlah_baris), 2) AS rata_total_gaji
-FROM CTE_Example
-GROUP BY gender;
+	SELECT gender, ROUND(AVG(jumlah_gaji/jumlah_baris), 2) AS rata_total_gaji
+	FROM CTE_Example
+	GROUP BY gender;
 
 
 
