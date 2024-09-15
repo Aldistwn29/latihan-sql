@@ -9,7 +9,8 @@ WITH RECURSIVE fibonacci (n, fib_n, next_fib_n) AS
     SELECT n + 1, next_fib_n, fib_n + next_fib_n
 	FROM fibonacci WHERE  n < 10
 )
-SELECT fib_n FROM fibonacci WHERE n = 8;
+
+	SELECT fib_n FROM fibonacci WHERE n = 8;
 
 
 -- Membuat table employees
