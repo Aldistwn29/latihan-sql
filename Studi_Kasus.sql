@@ -87,4 +87,44 @@ delimiter ;
 drop procedure buatidbuku;
 call buatidbuku();
 select * from ds.id_buku;
-    
+
+-- Membuat perhitungan bidang 2 d
+delimiter $$
+create procedure perhitung_bangun_datar
+(in jenis varchar(255),
+in x float,
+in y float,
+out hasil float,
+out keterangan varchar(255)
+)
+begin
+	case 
+		when jenis='Segitiga' then set hasil=0.5*x*y, keterangan='Perhitungan Berhasil!!';
+        when jenis='persegi Panjang' then set hasil=x*y, keterangan='Perhitungan Berhasil!!';
+		else set hasil=Null; set keterangan='Perhitungan Gagal. Bangun datar tidak ditemukan';
+	end case;
+    end $$
+delimiter ;
+
+show procedure status;
+-- Segitiga
+set @jenis_bangun_datar ='Segitiga';
+set @x = 5;
+set @y = 6;
+call perhitung_bangun_datar(@jenis_bangun_datar, @x, @y, @luas, @keterangan);
+select @jenis_bangun_datar, @x, @y, @luas, @keterangan;
+
+-- Persegi panjang
+set @jenis_bangun_datar = 'Persegi Panjang';
+set @x = 10;
+set @y= 20;
+call perhitung_bangun_datar(@jenis_bangun_datar, @x, @y, @luas, @keterangan);
+select @jenis_bangun_datar, @x, @y, @luas, @keterangan;
+
+-- Lingkaran
+set @jenis_bangun_datar = 'Lingkaran';
+set @x = 10;
+set @y= 20;
+call perhitung_bangun_datar(@jenis_bangun_datar, @x, @y, @luas, @keterangan);
+select @jenis_bangun_datar, @x, @y, @luas, @keterangan;
+
