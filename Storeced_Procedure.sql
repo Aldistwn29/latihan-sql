@@ -73,3 +73,45 @@ CALL getTotalRow2(@kode_kab_kota);
 SELECT @kode_kab_kota;
 
 SELECT COUNT(*) FROM umkm_jawa_barat WHERE kode_kabupaten_kota = 3201;    
+
+
+-- Loop
+CREATE TABLE id_mahasiswa(id INT);
+
+INSERT INTO id_mahasiswa VALUES(0);
+DELIMITER //
+CREATE PROCEDURE buatIdMahasiswa()
+BEGIN
+		DECLARE count INT;
+        SET count = 1;
+        WHILE count <= 10 DO
+			INSERT INTO id_mahasiswa(id) VALUES(count);
+			SET count = count + 1;
+		END WHILE;
+END //
+DELIMITER ;
+
+CALL buatIdMahasiswa();
+SELECT * FROM id_mahasiswa;
+
+-- Conditional (IF THEN)
+DELIMITER $$
+CREATE PROCEDURE test
+(
+	IN bilangan INT,
+    OUT hasil VARCHAR(100)
+)
+BEGIN
+	IF bilangan <= 50 THEN SET hasil = "Kurang dari sama dengan 50";
+    ELSE SET hasil = "Lebih dari 50";
+    END IF;
+END $$
+
+DELIMITER ;
+
+CALL test(60, @hasil_bilangan);
+SELECT @hasil_bilangan;
+
+
+
+
